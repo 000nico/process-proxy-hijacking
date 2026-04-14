@@ -25,7 +25,7 @@ In the example, im looking for svchost.exe, in order to read and write values of
 
 ---
 
-### 🚀 <code>proxy::init</code>
+### <code>proxy::init</code>
 
 <pre>
 int proxy::init(ULONG accessMask, LPCSTR windowName, bool debug)
@@ -54,7 +54,7 @@ int proxy::init(ULONG accessMask, LPCSTR windowName, bool debug)
 
 ---
 
-### 🔐 <code>proxy::enableSeDebugPrivilege</code>
+### <code>proxy::enableSeDebugPrivilege</code>
 
 <pre>
 bool proxy::enableSeDebugPrivilege()
@@ -64,7 +64,7 @@ Enables <b>SeDebugPrivilege</b> to allow interaction with external processes.
 
 ---
 
-### 🔎 <code>proxy::findProcessWithHandle</code>
+### <code>proxy::findProcessWithHandle</code>
 
 <pre>
 int proxy::findProcessWithHandle(
@@ -90,7 +90,7 @@ Finds a process that already has a handle to the target window.
 
 ---
 
-### 🧠 <code>proxy::findAddressWithHandle</code>
+### <code>proxy::findAddressWithHandle</code>
 
 <pre>
 int proxy::findAddressWithHandle(
@@ -115,7 +115,7 @@ Searches inside the process memory to find where the handle is stored.
 
 ---
 
-### 💉 <code>proxy::prepareCodeInjection</code>
+### <code>proxy::prepareCodeInjection</code>
 
 <pre>
 int proxy::prepareCodeInjection(
@@ -145,7 +145,7 @@ Allocates memory in the target process.
 
 ---
 
-### 📦 <code>payload::load</code>
+### <code>payload::load</code>
 
 <pre>
 int payload::load(

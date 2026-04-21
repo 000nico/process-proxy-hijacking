@@ -5,7 +5,7 @@
 This project injects a payload into a process so it can <b>read and write memory for us</b>,  
 so you can work with memory <b>without opening or duplicating new handles</b>.
 
-Usage:
+## Usage:
 - load the payload with ```proxy::init(READ | WRITE, "Your target window", FALSE)```
 - read and write with ```proxy::write(0x1234, 1337, sizeof(int))``` and ```proxy::read(0x1234, sizeof(float))```
 

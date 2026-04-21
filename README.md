@@ -6,10 +6,9 @@ This project injects a payload into a process so it can <b>read and write memory
 so you can work with memory <b>without opening or duplicating new handles</b>.
 
 Usage:
-- load the payload with <code>proxy::init()<code>
-- read and write with <code>proxy::write(0x1234, 1337, sizeof(int))<code> and <code>proxy::read(0x1234, sizeof(float))<code>
+- load the payload with ```proxy::init(READ | WRITE, "Your target window", FALSE)```
+- read and write with ```proxy::write(0x1234, 1337, sizeof(int))``` and ```proxy::read(0x1234, sizeof(float))```
 
-In the example, im looking for svchost.exe, in order to read and write values of counter-strike 2
 ---
 
 ## ⚙️ Workflow

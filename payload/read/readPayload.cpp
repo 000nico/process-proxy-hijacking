@@ -9,7 +9,7 @@ void pReadMem(payloadStruct* data){
             HANDLE handle = *(HANDLE*) data->handleAddress;
 
             uintptr_t buffer;
-            data->read(handle, (PVOID)data->targetAddress, (LPVOID)data->readBuffer, sizeof(DWORD), nullptr);
+            data->read(handle, (PVOID)data->targetAddress, (LPVOID)data->readBuffer, data->size, nullptr);
 
             data->readSignal = 0;
         }

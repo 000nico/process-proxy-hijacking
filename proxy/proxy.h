@@ -22,14 +22,14 @@ namespace proxy{
     int prepareCodeInjection(DWORD pid, LPVOID* rShellCodeBaseAddress, LPVOID* wShellCodeBaseAddress, LPVOID* rBufferBaseAddress, LPVOID* wBufferBaseAddress, LPVOID* structBaseAddress);
     int init(ULONG accessMask, LPCSTR windowName, bool debug);
     int exit(bool debug);
-    int read(uintptr_t address);
-    int write(uintptr_t address, uintptr_t value);
+    int read(uintptr_t address, SIZE_T size);
+    int write(uintptr_t address, uintptr_t value, SIZE_T size);
 }
 
 namespace payload{
     int load(DWORD pid, uintptr_t readShellCodeBaseAddress, uintptr_t handleAddress, uintptr_t readBufferAddress, uintptr_t structBaseAddress, uintptr_t writeShellCodeBaseAddress, uintptr_t writeBufferAddress);
-    uintptr_t read(DWORD pid, uintptr_t address, uintptr_t addressOfReadBuffer, uintptr_t structBaseAddress);
-    uintptr_t write(DWORD pid, uintptr_t address, uintptr_t valueToWrite, uintptr_t addressOfWriteBuffer, uintptr_t structBaseAddress);
+    uintptr_t read(DWORD pid, uintptr_t address, uintptr_t addressOfReadBuffer, uintptr_t structBaseAddress, SIZE_T size);
+    uintptr_t write(DWORD pid, uintptr_t address, uintptr_t valueToWrite, uintptr_t addressOfWriteBuffer, uintptr_t structBaseAddress, SIZE_T size);
 }
 
 // nt query system information import
@@ -89,6 +89,7 @@ struct payloadStruct {
     // both
     uintptr_t handleAddress;
     uintptr_t targetAddress;
+    SIZE_T size;
 
     // read
     uintptr_t readBuffer;

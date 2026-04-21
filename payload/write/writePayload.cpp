@@ -7,7 +7,7 @@ void pWriteMem(payloadStruct* data){
         if(data->writeSignal){
             HANDLE handle = *(HANDLE*) data->handleAddress;
 
-            data->write(handle, (PVOID)data->targetAddress, (PVOID)data->writeBuffer, sizeof(DWORD), nullptr);
+            data->write(handle, (PVOID)data->targetAddress, (PVOID)data->writeBuffer, data->size, nullptr);
 
             data->writeSignal = 0;
         }

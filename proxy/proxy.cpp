@@ -233,8 +233,7 @@ int payload::load(DWORD pid, uintptr_t readShellCodeBaseAddress, uintptr_t handl
     return 1;
 }
 
-uintptr_t payload::read(DWORD pid, uintptr_t address, uintptr_t addressOfReadBuffer, uintptr_t structBaseAddress) {
-    HMODULE ntdll = GetModuleHandleA("ntdll.dll");
+uintptr_t payload::read(DWORD pid, uintptr_t address, uintptr_t addressOfReadBuffer, uintptr_t structBaseAddress, SIZE_T size) {
     HANDLE targetHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
 
     // read the actual struct and send signal
@@ -242,6 +241,7 @@ uintptr_t payload::read(DWORD pid, uintptr_t address, uintptr_t addressOfReadBuf
     ReadProcessMemory(targetHandle, (LPVOID)structBaseAddress, &pd, sizeof(pd), 0);
     pd.targetAddress = address;
     pd.readSignal = 1;
+    pd.size = size;
     WriteProcessMemory(targetHandle, (LPVOID)structBaseAddress, &pd, sizeof(pd), 0);
 
     // wait for payload to finish
@@ -254,7 +254,7 @@ uintptr_t payload::read(DWORD pid, uintptr_t address, uintptr_t addressOfReadBuf
     // catch the readed data in the read buffer
     uintptr_t result;
     
-    if(ReadProcessMemory(targetHandle, (LPVOID)addressOfReadBuffer, &result, sizeof(DWORD), 0)){
+    if(ReadProcessMemory(targetHandle, (LPVOID)addressOfReadBuffer, &result, size, 0)){
         CloseHandle(targetHandle);
         return result;
     }
@@ -263,16 +263,17 @@ uintptr_t payload::read(DWORD pid, uintptr_t address, uintptr_t addressOfReadBuf
     return 0;
 }
 
-uintptr_t payload::write(DWORD pid, uintptr_t address, uintptr_t valueToWrite, uintptr_t addressOfWriteBuffer, uintptr_t structBaseAddress){
+uintptr_t payload::write(DWORD pid, uintptr_t address, uintptr_t valueToWrite, uintptr_t addressOfWriteBuffer, uintptr_t structBaseAddress, SIZE_T size){
     HANDLE targetHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
 
-    WriteProcessMemory(targetHandle, (LPVOID)addressOfWriteBuffer, &valueToWrite, sizeof(DWORD), 0);
+    WriteProcessMemory(targetHandle, (LPVOID)addressOfWriteBuffer, &valueToWrite, size, 0);
 
     // read the actual struct and send signal
     payloadStruct pd = {};
     ReadProcessMemory(targetHandle, (LPVOID)structBaseAddress, &pd, sizeof(pd), 0);
     pd.targetAddress = address;
     pd.writeSignal = 1;
+    pd.size = size;
     WriteProcessMemory(targetHandle, (LPVOID)structBaseAddress, &pd, sizeof(pd), 0);
 
     int signal = 1;
@@ -380,12 +381,12 @@ int proxy::exit(bool debug){
     return 1;
 }
 
-int proxy::read(uintptr_t address){
-    int result = payload::read(targetPid, address, readBufferAddress, structAddress);
+int proxy::read(uintptr_t address, SIZE_T size){
+    int result = payload::read(targetPid, address, readBufferAddress, structAddress, size);
     return result;
 }
 
-int proxy::write(uintptr_t address, uintptr_t value){
-    int result = payload::write(targetPid, address, value, writeBufferAddress, structAddress);
+int proxy::write(uintptr_t address, uintptr_t value, SIZE_T size){
+    int result = payload::write(targetPid, address, value, writeBufferAddress, structAddress, size);
     return result;
 }

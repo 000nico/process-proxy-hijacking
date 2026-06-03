@@ -1,6 +1,6 @@
 # Process Proxy 
 
-## 📌 Overview
+## Overview
 
 This project injects a payload into a process so it can <b>read and write memory for us</b>,  
 so you can work with memory <b>without opening or duplicating new handles</b>.
@@ -11,7 +11,7 @@ so you can work with memory <b>without opening or duplicating new handles</b>.
 
 ---
 
-## ⚙️ Workflow
+## Workflow
 
 <ol>
   <li>Enable debug privileges</li>
